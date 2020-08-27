@@ -1,5 +1,5 @@
 from flask import Flask, jsonify,request
-import sqlite
+import sqlite3
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -23,8 +23,14 @@ def api_all():
 	conn = sqlite3.connect('books.db')
 	conn.row_factory = dict_factory
 	cur = conn.cursor()
-	all_books = cur.execute('SELECT * FROM books').fetchall()
+	all_books = cur.execute('SELECT * FROM books;').fetchall()
 	return jsonify(all_books)
+
+#error handler
+@app.errorhandler(404)
+def page_not_found(e):
+	return "<h1> 404</h1><p>The resource could not be found.<p>",404
+
 
 @app.route('/api/v1/resources/books', methods=['GET'])
 def api_id():
