@@ -1,4 +1,5 @@
-from flask import Flask 
+from flask import Flask, jsonify,request
+
 app = Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -15,7 +16,7 @@ books = [
 	'id' : 1,
 	'title' : 'The ones who Walked Away From Omelas',
 	'author' : 'Ursula K. Le guin',
-	'first_sentence' : 'With a clamor of bells that set the swallows soaring , ...'
+	'first_sentence' : 'With a clamor of bells that set the swallows soaring , ...',
 	'published' : '1973'
 	},
 	{
@@ -27,9 +28,17 @@ books = [
 ]
 
 
-@app.route('/', method=['GET'])
+@app.route('/', methods=['GET'])
 def home():
 	return "<h1>Reading archive</h1><p>Prototype Api for reading science fiction novels </p>"
+
+	#route to return available entries in book catalogue
+
+@app.route('/api/v1/resources/books/all', methods=['GET'])
+def api_all():
+	return jsonify(books)
+
+
 
 if __name__=='__main__':
 	app.run()
